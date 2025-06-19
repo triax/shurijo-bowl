@@ -193,8 +193,8 @@
             once: true
         });
         
-        // Load key visual image
-        const keyVisualUrl = 'https://drive.google.com/uc?export=view&id=1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I';
+        // Load key visual image using thumbnail API to avoid 403 errors
+        const keyVisualUrl = 'https://drive.google.com/thumbnail?id=1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I&sz=w1200';
         $('#keyVisualImage').attr('src', keyVisualUrl);
         
         // Load players data
@@ -217,12 +217,14 @@
                             const message = cells[4].replace(/"/g, '');
                             const position = cells[5].replace(/"/g, '');
                             
-                            // Extract Google Drive ID from URL and convert to direct image URL
+                            // Extract Google Drive ID from URL and convert to thumbnail URL
+                            // Using thumbnail API to avoid 403 errors
                             let imageUrl = '';
                             if (photoUrl) {
                                 const match = photoUrl.match(/id=([a-zA-Z0-9_-]+)/);
                                 if (match) {
-                                    imageUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                                    // Use Google Drive thumbnail API which is more reliable
+                                    imageUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
                                 }
                             }
                             
