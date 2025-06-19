@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第3回 首里城ボウル - TRIAX vs 琉球ガーディアンライオンズ</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="2025.css">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white overflow-x-hidden">
+    
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 bg-black z-50 flex items-center justify-center">
+        <div class="loader-content text-center">
+            <div class="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-orange-500 mb-8"></div>
+            <h2 class="text-3xl font-bold text-orange-500 animate-pulse">LOADING...</h2>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        
+        <!-- Animated Background -->
+        <div class="animated-bg absolute inset-0">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4" data-aos="fade-up">
+            <h1 class="hero-title text-6xl md:text-8xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">
+                第3回 首里城ボウル
+            </h1>
+            <p class="text-2xl md:text-3xl mb-8 font-bold">史上初！沖縄でのXリーグ対決</p>
+            
+            <div class="match-info bg-white/10 backdrop-blur-md rounded-lg p-8 mb-8 max-w-4xl mx-auto" data-aos="zoom-in" data-aos-delay="200">
+                <div class="grid md:grid-cols-3 gap-8 items-center">
+                    <div class="team-logo">
+                        <h2 class="text-4xl font-bold mb-2 text-blue-400">TRIAX</h2>
+                        <p class="text-lg">東京</p>
+                    </div>
+                    <div class="vs-section">
+                        <span class="text-5xl font-black text-orange-500 glowing">VS</span>
+                        <div class="match-details mt-4">
+                            <p class="text-xl font-bold">2025年6月29日（日）</p>
+                            <p class="text-2xl font-black text-orange-400">15:00 K.O.</p>
+                            <p class="text-lg mt-2">📍 読谷村陸上競技場</p>
+                        </div>
+                    </div>
+                    <div class="team-logo">
+                        <h2 class="text-3xl font-bold mb-2 text-red-500">琉球ガーディアン<br>ライオンズ</h2>
+                        <p class="text-lg">沖縄</p>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#details" class="inline-block bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-4 px-8 rounded-full text-lg hover:scale-110 transform transition-all duration-300 shadow-2xl">
+                詳細を見る <i class="fas fa-arrow-down ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-3xl text-orange-400"></i>
+        </div>
+    </section>
+    
+    <!-- Story Section -->
+    <section id="story" class="py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-title text-5xl font-black text-center mb-12" data-aos="fade-down">
+                4年越しの夢、ついに実現
+            </h2>
+            
+            <div class="story-content bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12" data-aos="fade-up">
+                <p class="text-lg md:text-xl leading-relaxed mb-6">
+                    我らがTRIAXは、2000年の創部以来初めて沖縄に遠征し、X2-WEST所属の琉球ガーディアンライオンズと対戦します！
+                </p>
+                <p class="text-lg md:text-xl leading-relaxed mb-6">
+                    実は、2021年にも計画がありましたが、当時はコロナ禍でやむなく中止に。今回、ついに4年越しの夢が叶いました。
+                </p>
+                <p class="text-lg md:text-xl leading-relaxed font-bold text-orange-400">
+                    沖縄県でXリーグのチーム同士が試合を行うのは史上初とのこと。真夏には少し早いですが、我々は沖縄で、灼熱フットボール旋風を巻き起こします。
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Key Visual Section -->
+    <section id="key-visual" class="py-20 px-4 bg-black/30">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-title text-5xl font-black text-center mb-12" data-aos="fade-down">
+                KEY VISUAL
+            </h2>
+            <div class="key-visual-container relative rounded-2xl overflow-hidden shadow-2xl" data-aos="zoom-in">
+                <img id="keyVisualImage" src="" alt="第3回 首里城ボウル キービジュアル" class="w-full h-auto">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Players Section -->
+    <section id="players" class="py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-title text-5xl font-black text-center mb-12" data-aos="fade-down">
+                出場選手
+            </h2>
+            <div id="playersGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Players will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Details Section -->
+    <section id="details" class="py-20 px-4 bg-gradient-to-br from-orange-900/20 to-red-900/20">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="section-title text-5xl font-black text-center mb-12" data-aos="fade-down">
+                EVENT DETAILS
+            </h2>
+            
+            <div class="details-card bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12" data-aos="fade-up">
+                <div class="detail-item mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-orange-400">
+                        <i class="fas fa-calendar-alt mr-3"></i>開催日時
+                    </h3>
+                    <p class="text-xl">2025年6月29日（日）15:00 キックオフ</p>
+                </div>
+                
+                <div class="detail-item mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-orange-400">
+                        <i class="fas fa-map-marker-alt mr-3"></i>会場
+                    </h3>
+                    <p class="text-xl">読谷村陸上競技場</p>
+                    <p class="text-lg text-gray-300">沖縄県中頭郡読谷村</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h3 class="text-2xl font-bold mb-4 text-orange-400">
+                        <i class="fas fa-football-ball mr-3"></i>対戦カード
+                    </h3>
+                    <p class="text-xl">TRIAX（X2-EAST） vs 琉球ガーディアンライオンズ（X2-WEST）</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section id="cta" class="py-20 px-4 text-center">
+        <div class="container mx-auto max-w-4xl" data-aos="fade-up">
+            <h2 class="text-4xl md:text-5xl font-black mb-8">一緒に戦う仲間を募集中！</h2>
+            <p class="text-xl mb-8">TRIAXは一緒に戦うPlayer・Staffを募集しています。</p>
+            
+            <div class="hashtags flex flex-wrap justify-center gap-4 mb-12">
+                <span class="hashtag bg-blue-600/30 px-4 py-2 rounded-full">#琉球ガーディアンライオンズ</span>
+                <span class="hashtag bg-blue-600/30 px-4 py-2 rounded-full">#clubtriax</span>
+                <span class="hashtag bg-blue-600/30 px-4 py-2 rounded-full">#首里城ボウル</span>
+                <span class="hashtag bg-blue-600/30 px-4 py-2 rounded-full">#読谷村陸上競技場</span>
+                <span class="hashtag bg-blue-600/30 px-4 py-2 rounded-full">#沖縄</span>
+                <span class="hashtag bg-blue-600/30 px-4 py-2 rounded-full">#アメリカンフットボール</span>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="py-8 text-center text-gray-400">
+        <p>&copy; 2025 TRIAX - 第3回 首里城ボウル</p>
+    </footer>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+        
+        // Load key visual image
+        const keyVisualUrl = 'https://drive.google.com/uc?export=view&id=1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I';
+        $('#keyVisualImage').attr('src', keyVisualUrl);
+        
+        // Load players data
+        const playersUrl = 'https://docs.google.com/spreadsheets/d/1pBskF8oCg3HrdWtv0xACeWDfe7_mZZ8-2a8gncHRhjA/gviz/tq?tqx=out:csv';
+        
+        fetch(playersUrl)
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.split('\n').slice(1); // Skip header
+                const playersGrid = $('#playersGrid');
+                
+                rows.forEach((row, index) => {
+                    if (row.trim()) {
+                        const cells = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
+                        if (cells.length >= 3) {
+                            const number = cells[0].replace(/"/g, '');
+                            const name = cells[1].replace(/"/g, '');
+                            const position = cells[2].replace(/"/g, '');
+                            
+                            const playerCard = `
+                                <div class="player-card bg-white/10 backdrop-blur-md rounded-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="${index * 50}">
+                                    <div class="player-number text-4xl font-black text-orange-400 mb-2">#${number}</div>
+                                    <h3 class="text-xl font-bold mb-1">${name}</h3>
+                                    <p class="text-gray-300">${position}</p>
+                                </div>
+                            `;
+                            playersGrid.append(playerCard);
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading players:', error));
+        
+        // Hide loader when page is ready
+        $(window).on('load', function() {
+            setTimeout(function() {
+                $('#loader').fadeOut('slow');
+            }, 1000);
+        });
+        
+        // Smooth scroll
+        $('a[href^="#"]').on('click', function(e) {
+            e.preventDefault();
+            const target = $(this.hash);
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - 50
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
