@@ -175,12 +175,24 @@
 }
 
 /* Style for player photos */
+.player-photo {
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
 .player-photo img {
     transition: transform 0.3s ease;
+    display: block;
+    max-height: 300px;
+    width: auto;
+    margin: 0 auto;
 }
 
 .player-card:hover .player-photo img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .player-card::before {
@@ -243,13 +255,14 @@
 
 /* Key visual container */
 .key-visual-container {
-    max-height: 600px;
     position: relative;
 }
 
 .key-visual-container img {
-    object-fit: cover;
-    max-height: 600px;
+    object-fit: contain;
+    max-height: 800px;
+    width: 100%;
+    height: auto;
 }
 
 .key-visual-container::after {
