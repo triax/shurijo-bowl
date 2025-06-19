@@ -32,7 +32,7 @@ vs琉球ガーディアンライオンズ
 
 # Key Visual
 
-https://drive.google.com/file/d/1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I/view?usp=sharing
+https://drive.google.com/open?id=1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I
 
 # 出場選手情報一覧
 

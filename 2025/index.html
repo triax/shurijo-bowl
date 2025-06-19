@@ -86,6 +86,19 @@
         </div>
     </section>
     
+    <!-- Key Visual Section -->
+    <section id="key-visual" class="py-20 px-4 bg-black/30">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="section-title text-5xl font-black text-center mb-12" data-aos="fade-down">
+                KEY VISUAL
+            </h2>
+            <div class="key-visual-container relative rounded-2xl overflow-hidden shadow-2xl" data-aos="zoom-in">
+                <img id="keyVisualImage" src="" alt="第3回 首里城ボウル キービジュアル" class="w-full h-auto">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Story Section -->
     <section id="story" class="py-20 px-4">
         <div class="container mx-auto max-w-6xl">
@@ -103,19 +116,6 @@
                 <p class="text-lg md:text-xl leading-relaxed font-bold text-orange-400">
                     沖縄県でXリーグのチーム同士が試合を行うのは史上初とのこと。真夏には少し早いですが、我々は沖縄で、灼熱フットボール旋風を巻き起こします。
                 </p>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Key Visual Section -->
-    <section id="key-visual" class="py-20 px-4 bg-black/30">
-        <div class="container mx-auto max-w-6xl">
-            <h2 class="section-title text-5xl font-black text-center mb-12" data-aos="fade-down">
-                KEY VISUAL
-            </h2>
-            <div class="key-visual-container relative rounded-2xl overflow-hidden shadow-2xl" data-aos="zoom-in">
-                <img id="keyVisualImage" src="" alt="第3回 首里城ボウル キービジュアル" class="w-full h-auto">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             </div>
         </div>
     </section>
@@ -209,16 +209,34 @@
                 rows.forEach((row, index) => {
                     if (row.trim()) {
                         const cells = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
-                        if (cells.length >= 3) {
-                            const number = cells[0].replace(/"/g, '');
+                        if (cells.length >= 6) {
+                            // Skip timestamp (cells[0]), get actual player data
                             const name = cells[1].replace(/"/g, '');
-                            const position = cells[2].replace(/"/g, '');
+                            const nameReading = cells[2].replace(/"/g, '');
+                            const photoUrl = cells[3].replace(/"/g, '');
+                            const message = cells[4].replace(/"/g, '');
+                            const position = cells[5].replace(/"/g, '');
+                            
+                            // Extract Google Drive ID from URL and convert to direct image URL
+                            let imageUrl = '';
+                            if (photoUrl) {
+                                const match = photoUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                                if (match) {
+                                    imageUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                                }
+                            }
                             
                             const playerCard = `
-                                <div class="player-card bg-white/10 backdrop-blur-md rounded-lg p-6 transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="${index * 50}">
-                                    <div class="player-number text-4xl font-black text-orange-400 mb-2">#${number}</div>
-                                    <h3 class="text-xl font-bold mb-1">${name}</h3>
-                                    <p class="text-gray-300">${position}</p>
+                                <div class="player-card bg-white/10 backdrop-blur-md rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="${index * 50}">
+                                    ${imageUrl ? `<div class="player-photo h-48 overflow-hidden">
+                                        <img src="${imageUrl}" alt="${name}" class="w-full h-full object-cover">
+                                    </div>` : ''}
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold mb-1">${name}</h3>
+                                        <p class="text-sm text-gray-400 mb-2">${nameReading}</p>
+                                        <p class="text-lg font-semibold text-orange-400 mb-3">${position}</p>
+                                        ${message ? `<p class="text-sm italic text-gray-300">"${message}"</p>` : ''}
+                                    </div>
                                 </div>
                             `;
                             playersGrid.append(playerCard);
