@@ -209,49 +209,104 @@
         fetch(playersUrl)
             .then(response => response.text())
             .then(data => {
-                const rows = data.split('\n').slice(1); // Skip header
+                // Parse CSV properly handling quoted fields with newlines
+                const parseCSV = (text) => {
+                    const rows = [];
+                    let currentRow = [];
+                    let currentCell = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < text.length; i++) {
+                        const char = text[i];
+                        const nextChar = text[i + 1];
+                        
+                        if (char === '"') {
+                            if (inQuotes && nextChar === '"') {
+                                // Escaped quote
+                                currentCell += '"';
+                                i++; // Skip next quote
+                            } else {
+                                // Toggle quote state
+                                inQuotes = !inQuotes;
+                            }
+                        } else if (char === ',' && !inQuotes) {
+                            // End of cell
+                            currentRow.push(currentCell);
+                            currentCell = '';
+                        } else if (char === '\n' && !inQuotes) {
+                            // End of row
+                            currentRow.push(currentCell);
+                            if (currentRow.some(cell => cell.trim())) { // Skip empty rows
+                                rows.push(currentRow);
+                            }
+                            currentRow = [];
+                            currentCell = '';
+                        } else {
+                            // Regular character
+                            currentCell += char;
+                        }
+                    }
+                    
+                    // Add last cell and row if exists
+                    if (currentCell || currentRow.length > 0) {
+                        currentRow.push(currentCell);
+                        if (currentRow.some(cell => cell.trim())) {
+                            rows.push(currentRow);
+                        }
+                    }
+                    
+                    return rows;
+                };
+                
+                const rows = parseCSV(data);
                 const playersGrid = $('#playersGrid');
                 
-                rows.forEach((row, index) => {
-                    if (row.trim()) {
-                        const cells = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
-                        if (cells.length >= 6) {
-                            // Skip timestamp (cells[0]), get actual player data
-                            const name = cells[1].replace(/"/g, '');
-                            const nameReading = cells[2].replace(/"/g, '');
-                            const photoUrl = cells[3].replace(/"/g, '');
-                            const message = cells[4].replace(/"/g, '');
-                            const position = cells[5].replace(/"/g, '');
-                            
-                            // Extract Google Drive ID from URL and convert to thumbnail URL
-                            // Using thumbnail API to avoid 403 errors
-                            let imageUrl = '';
-                            if (photoUrl) {
-                                const match = photoUrl.match(/id=([a-zA-Z0-9_-]+)/);
-                                if (match) {
-                                    // Use Google Drive thumbnail API which is more reliable
-                                    imageUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
-                                }
-                            } else {
-                                // Use default image if no photo URL provided
-                                imageUrl = 'https://drive.google.com/thumbnail?id=10WceQ_Yym-MbbBqaSTC9t9S_Lc12aNSn&sz=w400';
+                // Skip header row
+                rows.slice(1).forEach((cells, index) => {
+                    if (cells.length >= 6) {
+                        // Skip timestamp (cells[0]), get actual player data
+                        const name = cells[1] || '';
+                        const nameReading = cells[2] || '';
+                        const photoUrl = cells[3] || '';
+                        const message = cells[4] || '';
+                        const position = cells[5] || '';
+                        
+                        // Skip if no name
+                        if (!name.trim()) return;
+                        
+                        console.log('Player:', name, 'Photo URL:', photoUrl);
+                        
+                        // Extract Google Drive ID from URL and convert to thumbnail URL
+                        // Using thumbnail API to avoid 403 errors
+                        let imageUrl = '';
+                        if (photoUrl && photoUrl.includes('drive.google.com')) {
+                            const match = photoUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                            if (match) {
+                                // Use Google Drive thumbnail API which is more reliable
+                                imageUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
                             }
-                            
-                            const playerCard = `
-                                <div class="player-card bg-white/10 backdrop-blur-md rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="${index * 50}">
-                                    <div class="player-photo">
-                                        <img src="${imageUrl}" alt="${name}" class="w-full h-auto">
-                                    </div>
-                                    <div class="p-6">
-                                        <h3 class="text-xl font-bold mb-1">${name}</h3>
-                                        <p class="text-sm text-gray-400 mb-2">${nameReading}</p>
-                                        <p class="text-lg font-semibold text-orange-400 mb-3">${position}</p>
-                                        ${message ? `<p class="text-sm italic text-gray-300">"${message}"</p>` : ''}
-                                    </div>
-                                </div>
-                            `;
-                            playersGrid.append(playerCard);
                         }
+                        
+                        // Use default image if no photo URL or couldn't extract ID
+                        if (!imageUrl) {
+                            imageUrl = 'https://drive.google.com/thumbnail?id=10WceQ_Yym-MbbBqaSTC9t9S_Lc12aNSn&sz=w400';
+                        }
+                        
+                        const playerCard = `
+                            <div class="player-card bg-white/10 backdrop-blur-md rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="${index * 50}">
+                                <div class="player-photo">
+                                    <img src="${imageUrl}" alt="${name}" class="w-full h-auto">
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold mb-1">${name}</h3>
+                                    <p class="text-sm text-gray-400 mb-2">${nameReading}</p>
+                                    <p class="text-lg font-semibold text-orange-400 mb-3">${position}</p>
+                                    ${message ? `<p class="text-sm italic text-gray-300">"${message}"</p>` : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                        playersGrid.append(playerCard);
                     }
                 });
             })
