@@ -188,6 +188,40 @@
         </div>
     </section>
     
+    <!-- Player Detail Modal -->
+    <div id="playerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-slate-900 rounded-2xl max-w-2xl w-full mx-auto transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+                <div class="relative">
+                    <!-- Close button -->
+                    <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                    
+                    <!-- Modal Header with Player Info -->
+                    <div class="border-b border-gray-700 p-6">
+                        <div class="flex items-start gap-4">
+                            <img id="modalPlayerPhoto" src="" alt="" class="w-24 h-24 rounded-lg object-cover">
+                            <div>
+                                <h3 id="modalPlayerName" class="text-2xl font-bold text-white"></h3>
+                                <p id="modalPlayerReading" class="text-sm text-gray-400"></p>
+                                <div class="flex items-center gap-3 mt-2">
+                                    <span id="modalPlayerNumber" class="text-xl font-bold text-blue-400"></span>
+                                    <span id="modalPlayerPosition" class="text-lg text-orange-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Q&A Content -->
+                    <div class="p-6 space-y-4" id="modalQAContent">
+                        <!-- Q&A items will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="py-8 text-center text-gray-400">
         <p>&copy; 2025 TRIAX - 第3回 首里城ボウル</p>
     </footer>
@@ -271,6 +305,18 @@
                         const message = cells[4] || '';
                         const position = cells[5] || '';
                         const jerseyNumberG = cells[6] || ''; // G列の背番号
+                        
+                        // Q&A data (H列からN列)
+                        const qaData = {
+                            highlight: cells[7] || '', // H列: ここを見てくれ！
+                            favoriteFood: cells[8] || '', // I列: 好きな食べ物
+                            wantInOkinawa: cells[9] || '', // J列: 沖縄でやりたいこと
+                            okinawaMemory: cells[10] || '', // K列: 沖縄での思い出
+                            favoriteAthlete: cells[11] || '', // L列: 好きなスポーツ選手
+                            favoriteTeam: cells[12] || '', // M列: 好きなスポーツチーム
+                            other: cells[13] || '' // N列: その他なんでも
+                        };
+                        
                         const jerseyNumberP = cells[15] || ''; // P列の背番号
                         
                         // G列かP列のどちらかの背番号を使用（G列を優先）
@@ -297,8 +343,9 @@
                             imageUrl = 'https://drive.google.com/thumbnail?id=10WceQ_Yym-MbbBqaSTC9t9S_Lc12aNSn&sz=w400';
                         }
                         
-                        const playerCard = `
-                            <div class="player-card bg-white/10 backdrop-blur-md rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300" data-aos="fade-up" data-aos-delay="${index * 50}">
+                        // Create player card with data attributes
+                        const playerCardEl = $(`
+                            <div class="player-card bg-white/10 backdrop-blur-md rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 cursor-pointer" data-aos="fade-up" data-aos-delay="${index * 50}">
                                 <div class="player-photo">
                                     <img src="${imageUrl}" alt="${name}" class="w-full h-auto">
                                 </div>
@@ -311,10 +358,18 @@
                                     </div>
                                     ${message ? `<p class="text-sm italic text-gray-300">"${message}"</p>` : ''}
                                 </div>
+                                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i class="fas fa-info-circle text-white/50"></i>
+                                </div>
                             </div>
-                        `;
+                        `);
                         
-                        playersGrid.append(playerCard);
+                        // Store player data in the element
+                        playerCardEl.data('player', {
+                            name, nameReading, imageUrl, jerseyNumber, position, message, qaData
+                        });
+                        
+                        playersGrid.append(playerCardEl);
                     }
                 });
             })
@@ -335,6 +390,101 @@
                 $('html, body').animate({
                     scrollTop: target.offset().top - 50
                 }, 1000);
+            }
+        });
+        
+        // Modal functionality
+        const modal = $('#playerModal');
+        const modalContent = $('#modalContent');
+        
+        // Open modal when player card is clicked
+        $(document).on('click', '.player-card', function() {
+            const playerData = $(this).data('player');
+            if (!playerData) return;
+            
+            // Update modal header
+            $('#modalPlayerPhoto').attr('src', playerData.imageUrl);
+            $('#modalPlayerName').text(playerData.name);
+            $('#modalPlayerReading').text(playerData.nameReading);
+            $('#modalPlayerNumber').text(playerData.jerseyNumber ? `#${playerData.jerseyNumber}` : '');
+            $('#modalPlayerPosition').text(playerData.position);
+            
+            // Build Q&A content
+            const qaContent = $('#modalQAContent');
+            qaContent.empty();
+            
+            // Add message if exists
+            if (playerData.message) {
+                qaContent.append(`
+                    <div class="qa-item">
+                        <h4 class="text-orange-400 font-semibold mb-1">意気込み</h4>
+                        <p class="text-gray-300">${playerData.message}</p>
+                    </div>
+                `);
+            }
+            
+            // Q&A mapping
+            const qaMapping = [
+                { key: 'highlight', label: '俺の私のここを見てくれ！', icon: '👀' },
+                { key: 'favoriteFood', label: '好きな食べ物', icon: '🍔' },
+                { key: 'wantInOkinawa', label: '沖縄でやりたいこと', icon: '🏝️' },
+                { key: 'okinawaMemory', label: '沖縄での思い出', icon: '🌺' },
+                { key: 'favoriteAthlete', label: '好きなスポーツ選手', icon: '⭐' },
+                { key: 'favoriteTeam', label: '好きなスポーツチーム', icon: '🏆' },
+                { key: 'other', label: 'その他', icon: '💬' }
+            ];
+            
+            // Add Q&A items
+            qaMapping.forEach(item => {
+                if (playerData.qaData[item.key]) {
+                    qaContent.append(`
+                        <div class="qa-item bg-white/5 rounded-lg p-4">
+                            <h4 class="text-orange-400 font-semibold mb-1 flex items-center gap-2">
+                                <span class="text-2xl">${item.icon}</span>
+                                ${item.label}
+                            </h4>
+                            <p class="text-gray-300">${playerData.qaData[item.key]}</p>
+                        </div>
+                    `);
+                }
+            });
+            
+            // If no Q&A data
+            if (qaContent.children().length === 0) {
+                qaContent.append(`
+                    <p class="text-gray-500 text-center py-8">詳細情報はまだ登録されていません</p>
+                `);
+            }
+            
+            // Show modal with animation
+            modal.removeClass('hidden');
+            setTimeout(() => {
+                modalContent.removeClass('scale-95 opacity-0').addClass('scale-100 opacity-100');
+            }, 10);
+        });
+        
+        // Close modal function
+        const closeModal = () => {
+            modalContent.removeClass('scale-100 opacity-100').addClass('scale-95 opacity-0');
+            setTimeout(() => {
+                modal.addClass('hidden');
+            }, 300);
+        };
+        
+        // Close modal on close button click
+        $('#closeModal').on('click', closeModal);
+        
+        // Close modal on overlay click
+        $('#playerModal').on('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Close modal on ESC key
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && !modal.hasClass('hidden')) {
+                closeModal();
             }
         });
     </script>
