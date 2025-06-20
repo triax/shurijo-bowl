@@ -306,16 +306,7 @@
                         const position = cells[5] || '';
                         const jerseyNumberG = cells[6] || ''; // G列の背番号
                         
-                        // Q&A data (H列からN列)
-                        // デバッグ: セル数を確認
-                        if (name === '岩佐康平') {
-                            console.log('岩佐選手のセルデータ:', cells);
-                            console.log('セル数:', cells.length);
-                            cells.forEach((cell, idx) => {
-                                console.log(`cells[${idx}]: "${cell}"`);
-                            });
-                        }
-                        
+                        // Q&A data (H列からO列)
                         const qaData = {
                             recentBoom: cells[7] || '', // H列: 最近のマイブーム
                             highlight: cells[8] || '', // I列: ここを見てくれ！
