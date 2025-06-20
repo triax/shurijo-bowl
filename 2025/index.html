@@ -307,14 +307,24 @@
                         const jerseyNumberG = cells[6] || ''; // G列の背番号
                         
                         // Q&A data (H列からN列)
+                        // デバッグ: セル数を確認
+                        if (name === '岩佐康平') {
+                            console.log('岩佐選手のセルデータ:', cells);
+                            console.log('セル数:', cells.length);
+                            cells.forEach((cell, idx) => {
+                                console.log(`cells[${idx}]: "${cell}"`);
+                            });
+                        }
+                        
                         const qaData = {
-                            highlight: cells[7] || '', // H列: ここを見てくれ！
-                            favoriteFood: cells[8] || '', // I列: 好きな食べ物
-                            wantInOkinawa: cells[9] || '', // J列: 沖縄でやりたいこと
-                            okinawaMemory: cells[10] || '', // K列: 沖縄での思い出
-                            favoriteAthlete: cells[11] || '', // L列: 好きなスポーツ選手
-                            favoriteTeam: cells[12] || '', // M列: 好きなスポーツチーム
-                            other: cells[13] || '' // N列: その他なんでも
+                            recentBoom: cells[7] || '', // H列: 最近のマイブーム
+                            highlight: cells[8] || '', // I列: ここを見てくれ！
+                            favoriteFood: cells[9] || '', // J列: 好きな食べ物
+                            wantInOkinawa: cells[10] || '', // K列: 沖縄でやりたいこと
+                            okinawaMemory: cells[11] || '', // L列: 沖縄での思い出
+                            favoriteAthlete: cells[12] || '', // M列: 好きなスポーツ選手
+                            favoriteTeam: cells[13] || '', // N列: 好きなスポーツチーム
+                            other: cells[14] || '' // O列: その他なんでも
                         };
                         
                         const jerseyNumberP = cells[15] || ''; // P列の背番号
@@ -425,6 +435,7 @@
             
             // Q&A mapping
             const qaMapping = [
+                { key: 'recentBoom', label: '最近のマイブーム', icon: '✨' },
                 { key: 'highlight', label: '俺の私のここを見てくれ！', icon: '👀' },
                 { key: 'favoriteFood', label: '好きな食べ物', icon: '🍔' },
                 { key: 'wantInOkinawa', label: '沖縄でやりたいこと', icon: '🏝️' },
