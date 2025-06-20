@@ -263,14 +263,18 @@
                 
                 // Skip header row
                 rows.slice(1).forEach((cells, index) => {
-                    if (cells.length >= 7) { // Updated to check for jersey number column
+                    if (cells.length >= 6) {
                         // Skip timestamp (cells[0]), get actual player data
                         const name = cells[1] || '';
                         const nameReading = cells[2] || '';
                         const photoUrl = cells[3] || '';
                         const message = cells[4] || '';
                         const position = cells[5] || '';
-                        const jerseyNumber = cells[6] || '';
+                        const jerseyNumberG = cells[6] || ''; // G列の背番号
+                        const jerseyNumberP = cells[15] || ''; // P列の背番号
+                        
+                        // G列かP列のどちらかの背番号を使用（G列を優先）
+                        const jerseyNumber = jerseyNumberG || jerseyNumberP;
                         
                         // Skip if no name
                         if (!name.trim()) return;
