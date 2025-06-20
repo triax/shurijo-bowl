@@ -1,47 +1,66 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+このファイルは、このリポジトリでコードを扱う際のClaude Code (claude.ai/code) への指針を提供します。
 
-## Project Overview
+## プロジェクト概要
 
-This is a static website project for the "第3回 首里城ボウル" (3rd Shurijo Bowl), an American football event featuring TRIAX vs Ryukyu Guardian Lions scheduled for June 29, 2025 in Okinawa, Japan.
+これは「第3回 首里城ボウル」のための静的ウェブサイトプロジェクトです。2025年6月29日に沖縄県読谷村陸上競技場で開催される、TRIAX（東京、X2-EAST）対琉球ガーディアンライオンズ（沖縄、X2-WEST）のアメリカンフットボールイベントです。沖縄県内でXリーグのチーム同士が試合を行うのは史上初となります。
 
-## Project Structure
+## プロジェクト構造
 
-- `/2025/` - Main event page directory
-  - `index.html` - Event landing page with dynamic player data loading
-  - `2025.css` - Event-specific styling with animations
-  - `README.md` - Event information and data sources
-- `/index.css` - Global styles shared across the project
+- `/2025/` - メインイベントページディレクトリ
+  - `index.html` - 動的な選手データ読み込み機能を持つイベントランディングページ
+  - `2025.css` - アニメーション付きイベント専用スタイル
+  - `README.md` - イベント情報とデータソース
+- `/index.css` - プロジェクト全体で共有されるグローバルスタイル
+- `/.gitignore` - .claudeと.vscodeディレクトリを無視
 
-## Key Features
+## 主要機能
 
-1. **Dynamic Player Data Loading**: The site fetches player information from a Google Sheets CSV endpoint
-2. **Key Visual Integration**: Displays event poster from Google Drive
-3. **Interactive UI**: Uses AOS (Animate On Scroll), jQuery, and Tailwind CSS for animations
-4. **Responsive Design**: Mobile-first approach with breakpoints for various devices
+1. **動的な選手データ読み込み**: 
+   - Google SheetsのCSVエンドポイントから選手名簿を取得
+   - 選手カードに写真（Google Driveサムネイル）、名前、ポジション、メッセージを表示
+   - CSVパーサーは日本語テキストと特殊文字を処理
+   
+2. **キービジュアル統合**: Google Driveからイベントポスターを表示
+3. **インタラクティブUI**: AOS（Animate On Scroll）、jQuery、Tailwind CSSを使用したアニメーション
+4. **レスポンシブデザイン**: 様々なデバイスに対応するモバイルファーストアプローチ
 
-## Development Commands
+## アーキテクチャメモ
 
-This is a static HTML/CSS/JS project with no build process. To develop:
+- **純粋な静的サイト**: ビルドプロセス、フレームワーク、サーバーサイドレンダリングなし
+- **データ読み込み**: JavaScriptがページ読み込み時にCSVデータを取得し、動的に選手カードを生成
+- **スタイリングアプローチ**: Tailwindユーティリティとカスタムアニメーション用CSSの組み合わせ
+- **アニメーションシステム**: 背景の波、グロー効果、ホバー状態のCSSアニメーション
+
+## 開発コマンド
+
+これはビルドプロセスのない静的HTML/CSS/JSプロジェクトです。開発するには：
 
 ```bash
-# Serve the site locally (use any static server)
+# ローカルでサイトを提供（任意の静的サーバーを使用）
 python3 -m http.server 8000
-# or
+# または
 npx serve .
 ```
 
-## External Dependencies
+## 外部依存関係
 
-The project uses CDN-hosted libraries:
-- Tailwind CSS for utility styling
-- jQuery for DOM manipulation
-- AOS for scroll animations
-- Font Awesome for icons
-- Google Fonts (Bebas Neue, Noto Sans JP)
+プロジェクトはCDNホストされたライブラリを使用：
+- Tailwind CSS - ユーティリティスタイリング用
+- jQuery 3.7.1 - DOM操作用
+- AOS 2.3.1 - スクロールアニメーション用
+- Font Awesome 6.5.1 - アイコン用
+- Google Fonts（Bebas Neue、Noto Sans JP）
 
-## Data Sources
+## データソース
 
-- Player roster: Google Sheets CSV export at `https://docs.google.com/spreadsheets/d/1pBskF8oCg3HrdWtv0xACeWDfe7_mZZ8-2a8gncHRhjA/gviz/tq?tqx=out:csv`
-- Key visual image: Google Drive file ID `1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I` (accessed via `https://drive.google.com/open?id=1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I`)
+- 選手名簿: Google SheetsのCSVエクスポート `https://docs.google.com/spreadsheets/d/1pBskF8oCg3HrdWtv0xACeWDfe7_mZZ8-2a8gncHRhjA/gviz/tq?tqx=out:csv`
+- キービジュアル画像: Google DriveファイルID `1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I`
+- 選手写真: Google DriveサムネイルAPIフォーマット: `https://drive.google.com/thumbnail?id={photoId}&sz=w400`
+
+## デザインシステム
+
+- **カラー**: オレンジ（#fb923c から #ef4444）とブルー（#3b82f6）のアクセントを持つダークテーマ
+- **タイポグラフィ**: ヘッダーにBebas Neue、本文にNoto Sans JP
+- **エフェクト**: グラデーション背景、アニメーション波、グローイングテキストシャドウ、シマーエフェクト
