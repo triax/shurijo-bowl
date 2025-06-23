@@ -477,11 +477,7 @@
         $('#closeModal').on('click', closeModal);
         
         // Close modal on overlay click
-        $('#playerModal').on('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
+        $('#playerModal').on('click', closeModal);
         
         // Close modal on ESC key
         $(document).on('keydown', function(e) {
