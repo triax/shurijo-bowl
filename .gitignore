@@ -1,2 +1,5 @@
-.claude
+node_modules/
+.claude/settings.local.json
 .vscode
+.doggies
+1_Meeting

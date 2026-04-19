@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "serve -l 9999"
+  },
+  "devDependencies": {
+    "serve": "^14.2.6"
+  }
+}

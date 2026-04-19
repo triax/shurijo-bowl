@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第4回 首里城ボウル - TRIAX vs 琉球ガーディアンライオンズ</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['"Bebas Neue"', '"Noto Sans JP"', 'sans-serif'],
+                        body: ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        fire: {
+                            400: '#ff6b35',
+                            500: '#ff4500',
+                            600: '#e03e00',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="2026.css">
+</head>
+<body class="bg-white min-h-screen text-gray-900 overflow-x-hidden font-body">
+
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 bg-white z-[100] flex items-center justify-center">
+        <div class="loader-content text-center">
+            <div class="relative w-24 h-24 mx-auto mb-6">
+                <div class="loader-ring"></div>
+                <div class="loader-ring delay-150"></div>
+                <div class="loader-ring delay-300"></div>
+            </div>
+            <h2 class="text-2xl font-heading tracking-widest text-fire-500 animate-pulse">SHURIJO BOWL</h2>
+        </div>
+    </div>
+
+    <!-- ==============================
+         HERO SECTION
+    ============================== -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-950">
+        <!-- Particle Background -->
+        <canvas id="particleCanvas" class="absolute inset-0 z-0"></canvas>
+
+        <!-- Overlay -->
+        <div class="absolute inset-0 z-[1]">
+            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-950/80 via-gray-950/40 to-gray-950/90"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <!-- Edition Badge -->
+            <div class="inline-block mb-6" data-aos="fade-down" data-aos-duration="800">
+                <span class="inline-block px-6 py-2 border-2 border-fire-500 text-fire-400 font-heading text-xl tracking-[0.3em] uppercase">
+                    4th Edition
+                </span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="font-heading text-[5rem] md:text-[8rem] lg:text-[10rem] leading-[0.9] mb-4 tracking-tight" data-aos="zoom-in" data-aos-duration="1000">
+                <span class="block text-white hero-text-stroke">首里城</span>
+                <span class="block text-transparent bg-clip-text bg-gradient-to-r from-fire-400 via-red-500 to-fire-600 hero-glow">ボウル</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-lg md:text-xl text-gray-400 mb-10 tracking-wide" data-aos="fade-up" data-aos-delay="300">
+                SHURIJO BOWL 2026
+            </p>
+
+            <!-- VS Card -->
+            <div class="vs-card relative mx-auto max-w-3xl" data-aos="fade-up" data-aos-delay="500">
+                <div class="vs-card-inner grid grid-cols-3 items-center gap-2 md:gap-6 py-8 px-4 md:px-10">
+                    <!-- TRIAX -->
+                    <div class="text-center">
+                        <h2 class="font-heading text-3xl md:text-5xl text-blue-400 mb-1 team-name">TRIAX</h2>
+                        <p class="text-xs md:text-sm text-gray-400 tracking-wider uppercase">Tokyo</p>
+                    </div>
+
+                    <!-- VS -->
+                    <div class="text-center">
+                        <div class="vs-badge inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full">
+                            <span class="font-heading text-3xl md:text-4xl text-white">VS</span>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-sm md:text-base font-bold text-white">2026.7.12<span class="text-fire-400"> SUN</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Guardians -->
+                    <div class="text-center">
+                        <h2 class="font-heading text-2xl md:text-4xl text-red-500 mb-1 team-name">GUARDIAN<br>LIONS</h2>
+                        <p class="text-xs md:text-sm text-gray-400 tracking-wider uppercase">Okinawa</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Countdown -->
+            <div class="mt-10" data-aos="fade-up" data-aos-delay="700">
+                <p class="text-xs text-gray-400 tracking-widest uppercase mb-3">Kickoff まで</p>
+                <div id="countdown" class="flex justify-center gap-3 md:gap-6">
+                    <div class="countdown-unit">
+                        <span id="cd-days" class="font-heading text-3xl md:text-5xl text-fire-400">---</span>
+                        <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-1">Days</span>
+                    </div>
+                    <span class="font-heading text-3xl md:text-5xl text-gray-600">:</span>
+                    <div class="countdown-unit">
+                        <span id="cd-hours" class="font-heading text-3xl md:text-5xl text-fire-400">--</span>
+                        <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-1">Hours</span>
+                    </div>
+                    <span class="font-heading text-3xl md:text-5xl text-gray-600">:</span>
+                    <div class="countdown-unit">
+                        <span id="cd-mins" class="font-heading text-3xl md:text-5xl text-fire-400">--</span>
+                        <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-1">Mins</span>
+                    </div>
+                    <span class="font-heading text-3xl md:text-5xl text-gray-600">:</span>
+                    <div class="countdown-unit">
+                        <span id="cd-secs" class="font-heading text-3xl md:text-5xl text-fire-400">--</span>
+                        <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-1">Secs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll CTA -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                <a href="#about" class="text-gray-400 hover:text-fire-400 transition-colors">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         KEY VISUAL SECTION
+    ============================== -->
+    <section id="key-visual" class="relative py-0">
+        <div class="w-full">
+            <a href="#" target="_blank" class="block relative group">
+                <img id="keyVisualImage" src="" alt="第4回 首里城ボウル キービジュアル" class="w-full h-auto">
+                <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white opacity-40"></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ==============================
+         ABOUT SECTION
+    ============================== -->
+    <section id="about" class="relative py-24 px-4 bg-white">
+        <!-- Diagonal top -->
+        <div class="section-divider-top"></div>
+
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="inline-block text-fire-500 font-heading text-lg tracking-[0.3em] uppercase mb-2">About</span>
+                <h2 class="font-heading text-5xl md:text-7xl text-gray-900">首里城ボウルとは</h2>
+            </div>
+
+            <div class="space-y-6" data-aos="fade-up" data-aos-delay="200">
+                <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                    首里城ボウルは、Xリーグ所属チーム同士による沖縄での交流戦イベントです。東京から<span class="text-blue-600 font-bold">Club TRIAX</span>が遠征し、沖縄の<span class="text-red-600 font-bold">琉球ガーディアンライオンズ</span>と激突します。
+                </p>
+                <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                    第4回となる今年も、灼熱の沖縄で熱いフットボールをお届けします。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         EVENT DETAILS
+    ============================== -->
+    <section id="details" class="relative py-24 px-4 bg-gray-50">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="inline-block text-fire-500 font-heading text-lg tracking-[0.3em] uppercase mb-2">Details</span>
+                <h2 class="font-heading text-5xl md:text-7xl text-gray-900">EVENT INFO</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="200">
+                <!-- Date -->
+                <div class="detail-card group">
+                    <div class="detail-icon">
+                        <i class="fas fa-calendar-alt text-3xl text-fire-500"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl text-gray-900 mt-4 mb-2">DATE</h3>
+                    <p class="text-xl text-gray-700">2026年7月12日</p>
+                    <p class="text-lg text-fire-500 font-bold">日曜日</p>
+                </div>
+
+                <!-- Venue -->
+                <div class="detail-card group">
+                    <div class="detail-icon">
+                        <i class="fas fa-map-marker-alt text-3xl text-fire-500"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl text-gray-900 mt-4 mb-2">VENUE</h3>
+                    <p class="text-xl text-gray-700">会場未定</p>
+                    <p class="text-sm text-gray-400 mt-1">決まり次第お知らせします</p>
+                </div>
+
+                <!-- Match -->
+                <div class="detail-card group">
+                    <div class="detail-icon">
+                        <i class="fas fa-football-ball text-3xl text-fire-500"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl text-gray-900 mt-4 mb-2">MATCH</h3>
+                    <p class="text-lg text-blue-600 font-bold">TRIAX</p>
+                    <p class="text-sm text-gray-400">vs</p>
+                    <p class="text-lg text-red-600 font-bold">琉球ガーディアンライオンズ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         PLAYERS SECTION
+    ============================== -->
+    <section id="players" class="relative py-24 px-4 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="inline-block text-fire-500 font-heading text-lg tracking-[0.3em] uppercase mb-2">Roster</span>
+                <h2 class="font-heading text-5xl md:text-7xl text-gray-900">出場選手</h2>
+            </div>
+
+            <div id="playersGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <!-- Players loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         CTA SECTION
+    ============================== -->
+    <section id="cta" class="relative py-24 px-4 overflow-hidden bg-gray-950">
+        <div class="absolute inset-0 bg-gradient-to-r from-fire-600/10 via-red-900/10 to-fire-600/10"></div>
+        <div class="relative z-10 container mx-auto max-w-3xl text-center" data-aos="fade-up">
+            <h2 class="font-heading text-4xl md:text-6xl text-white mb-6">JOIN US</h2>
+            <p class="text-lg text-gray-400 mb-8">TRIAXは一緒に戦うPlayer・Staffを募集しています。</p>
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <span class="tag">#首里城ボウル</span>
+                <span class="tag">#clubtriax</span>
+                <span class="tag">#琉球ガーディアンライオンズ</span>
+                <span class="tag">#沖縄</span>
+                <span class="tag">#アメリカンフットボール</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================
+         PLAYER MODAL
+    ============================== -->
+    <div id="playerModal" class="fixed inset-0 bg-black/50 backdrop-blur-md hidden z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-content bg-white border border-gray-200 rounded-xl max-w-2xl w-full mx-auto shadow-2xl transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+                <div class="relative">
+                    <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-900 transition-colors z-10">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+
+                    <div class="border-b border-gray-200 p-6">
+                        <div class="flex items-start gap-4">
+                            <img id="modalPlayerPhoto" src="" alt="" class="w-20 h-20 rounded-lg object-cover border border-gray-200">
+                            <div>
+                                <h3 id="modalPlayerName" class="text-xl font-bold text-gray-900"></h3>
+                                <p id="modalPlayerReading" class="text-sm text-gray-400"></p>
+                                <div class="flex items-center gap-3 mt-2">
+                                    <span id="modalPlayerNumber" class="text-lg font-heading text-blue-600"></span>
+                                    <span id="modalPlayerPosition" class="text-sm text-fire-500 font-bold uppercase tracking-wider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-3" id="modalQAContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================
+         FOOTER
+    ============================== -->
+    <footer class="py-10 text-center border-t border-gray-200 bg-white">
+        <p class="text-sm text-gray-400">&copy; 2026 TRIAX - 第4回 首里城ボウル</p>
+    </footer>
+
+    <script>
+        // ========== AOS ==========
+        AOS.init({ duration: 800, once: true, offset: 50 });
+
+        // ========== PARTICLE BACKGROUND ==========
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.7 ? '#ff4500' : '#ffffff';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ========== COUNTDOWN ==========
+        const targetDate = new Date('2026-07-12T15:00:00+09:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+            if (diff <= 0) {
+                document.getElementById('cd-days').textContent = '0';
+                document.getElementById('cd-hours').textContent = '00';
+                document.getElementById('cd-mins').textContent = '00';
+                document.getElementById('cd-secs').textContent = '00';
+                return;
+            }
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+            const mins = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+            const secs = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+            document.getElementById('cd-days').textContent = days;
+            document.getElementById('cd-hours').textContent = hours;
+            document.getElementById('cd-mins').textContent = mins;
+            document.getElementById('cd-secs').textContent = secs;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // ========== KEY VISUAL ==========
+        const keyVisualUrl = 'https://drive.google.com/thumbnail?id=1fuqRf0ehzLjTGAzmzui3orfc8zLkHS8I&sz=w1200';
+        document.getElementById('keyVisualImage').src = keyVisualUrl;
+
+        // ========== LOAD PLAYERS ==========
+        const playersUrl = 'https://docs.google.com/spreadsheets/d/1pBskF8oCg3HrdWtv0xACeWDfe7_mZZ8-2a8gncHRhjA/gviz/tq?tqx=out:csv';
+
+        fetch(playersUrl)
+            .then(r => r.text())
+            .then(data => {
+                const parseCSV = (text) => {
+                    const rows = [];
+                    let currentRow = [], currentCell = '', inQuotes = false;
+                    for (let i = 0; i < text.length; i++) {
+                        const ch = text[i], next = text[i + 1];
+                        if (ch === '"') {
+                            if (inQuotes && next === '"') { currentCell += '"'; i++; }
+                            else inQuotes = !inQuotes;
+                        } else if (ch === ',' && !inQuotes) {
+                            currentRow.push(currentCell); currentCell = '';
+                        } else if (ch === '\n' && !inQuotes) {
+                            currentRow.push(currentCell);
+                            if (currentRow.some(c => c.trim())) rows.push(currentRow);
+                            currentRow = []; currentCell = '';
+                        } else {
+                            currentCell += ch;
+                        }
+                    }
+                    if (currentCell || currentRow.length > 0) {
+                        currentRow.push(currentCell);
+                        if (currentRow.some(c => c.trim())) rows.push(currentRow);
+                    }
+                    return rows;
+                };
+
+                const rows = parseCSV(data);
+                const grid = document.getElementById('playersGrid');
+
+                rows.slice(1).forEach((cells, idx) => {
+                    if (cells.length < 6) return;
+                    const name = cells[1] || '', nameReading = cells[2] || '';
+                    const photoUrl = cells[3] || '', message = cells[4] || '';
+                    const position = cells[5] || '';
+                    const jerseyNumberG = cells[6] || '';
+                    const qaData = {
+                        recentBoom: cells[7] || '', highlight: cells[8] || '',
+                        favoriteFood: cells[9] || '', wantInOkinawa: cells[10] || '',
+                        okinawaMemory: cells[11] || '', favoriteAthlete: cells[12] || '',
+                        favoriteTeam: cells[13] || '', other: cells[14] || ''
+                    };
+                    const jerseyNumberP = cells[15] || '';
+                    const jerseyNumber = jerseyNumberG || jerseyNumberP;
+                    if (!name.trim()) return;
+
+                    let imageUrl = '';
+                    if (photoUrl && photoUrl.includes('drive.google.com')) {
+                        const match = photoUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                        if (match) imageUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
+                    }
+                    if (!imageUrl) imageUrl = 'https://drive.google.com/thumbnail?id=10WceQ_Yym-MbbBqaSTC9t9S_Lc12aNSn&sz=w400';
+
+                    const card = document.createElement('div');
+                    card.className = 'player-card group';
+                    card.setAttribute('data-aos', 'fade-up');
+                    card.setAttribute('data-aos-delay', String(Math.min(idx * 30, 300)));
+                    card.innerHTML = `
+                        <div class="player-photo-wrap">
+                            <img src="${imageUrl}" alt="${name}" class="player-photo-img" loading="lazy">
+                            <div class="player-overlay">
+                                <span class="text-xs text-fire-400 uppercase tracking-wider">Tap to view</span>
+                            </div>
+                        </div>
+                        <div class="p-3 md:p-4">
+                            <div class="flex items-baseline gap-2 mb-1">
+                                ${jerseyNumber ? `<span class="font-heading text-xl text-blue-600">#${jerseyNumber}</span>` : ''}
+                                <span class="text-[10px] text-fire-500 font-bold uppercase tracking-wider">${position}</span>
+                            </div>
+                            <h3 class="text-sm md:text-base font-bold text-gray-900 leading-tight">${name}</h3>
+                            ${message ? `<p class="text-xs text-gray-400 mt-1 line-clamp-2">${message}</p>` : ''}
+                        </div>
+                    `;
+
+                    card._playerData = { name, nameReading, imageUrl, jerseyNumber, position, message, qaData };
+                    grid.appendChild(card);
+                });
+            })
+            .catch(err => console.error('Error loading players:', err));
+
+        // ========== LOADER ==========
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                document.getElementById('loader').style.transition = 'opacity 0.5s';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+            }, 800);
+        });
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // ========== MODAL ==========
+        const modal = document.getElementById('playerModal');
+        const modalContent = document.getElementById('modalContent');
+
+        document.addEventListener('click', e => {
+            const card = e.target.closest('.player-card');
+            if (!card || !card._playerData) return;
+            const d = card._playerData;
+
+            document.getElementById('modalPlayerPhoto').src = d.imageUrl;
+            document.getElementById('modalPlayerName').textContent = d.name;
+            document.getElementById('modalPlayerReading').textContent = d.nameReading;
+            document.getElementById('modalPlayerNumber').textContent = d.jerseyNumber ? `#${d.jerseyNumber}` : '';
+            document.getElementById('modalPlayerPosition').textContent = d.position;
+
+            const qa = document.getElementById('modalQAContent');
+            qa.innerHTML = '';
+
+            if (d.message) {
+                qa.innerHTML += `<div class="qa-item"><h4 class="qa-label">意気込み</h4><p class="text-gray-600 text-sm">${d.message}</p></div>`;
+            }
+
+            const qaMap = [
+                { key: 'recentBoom', label: '最近のマイブーム', icon: '✨' },
+                { key: 'highlight', label: 'ここを見てくれ！', icon: '👀' },
+                { key: 'favoriteFood', label: '好きな食べ物', icon: '🍔' },
+                { key: 'wantInOkinawa', label: '沖縄でやりたいこと', icon: '🏝️' },
+                { key: 'okinawaMemory', label: '沖縄での思い出', icon: '🌺' },
+                { key: 'favoriteAthlete', label: '好きなスポーツ選手', icon: '⭐' },
+                { key: 'favoriteTeam', label: '好きなスポーツチーム', icon: '🏆' },
+                { key: 'other', label: 'その他', icon: '💬' }
+            ];
+
+            qaMap.forEach(item => {
+                if (d.qaData[item.key]) {
+                    qa.innerHTML += `
+                        <div class="qa-item">
+                            <h4 class="qa-label"><span class="mr-1">${item.icon}</span>${item.label}</h4>
+                            <p class="text-gray-600 text-sm">${d.qaData[item.key]}</p>
+                        </div>`;
+                }
+            });
+
+            if (!qa.children.length) {
+                qa.innerHTML = '<p class="text-gray-400 text-center py-6 text-sm">詳細情報はまだ登録されていません</p>';
+            }
+
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            });
+        });
+
+        function closeModalFn() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeModalFn);
+        modal.addEventListener('click', e => { if (e.target === modal) closeModalFn(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModalFn(); });
+    </script>
+</body>
+</html>
